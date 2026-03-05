@@ -53,7 +53,7 @@ def get_tasks() -> List[Dict]:
     """Read all tasks from the Task Tracker tab."""
     try:
         ws = _get_sheet("Task Tracker")
-        records = ws.get_all_records()
+        records = ws.get_all_records(head=2)
         # Clean up empty rows
         return [r for r in records if r.get("Task Title", "").strip()]
     except Exception as e:
@@ -65,7 +65,7 @@ def get_kpi_data() -> List[Dict]:
     """Read KPI data from the Dashboard tab."""
     try:
         ws = _get_sheet("Dashboard")
-        records = ws.get_all_records()
+        records = ws.get_all_records(head=2)
         return [r for r in records if r.get("Platform", "").strip()]
     except Exception as e:
         logger.error(f"get_kpi_data failed: {e}")
@@ -76,7 +76,7 @@ def get_team_config() -> Dict:
     """Read config values from the Config tab."""
     try:
         ws = _get_sheet("Config")
-        records = ws.get_all_records()
+        records = ws.get_all_records(head=2)
         return {r["Key"]: r["Value"] for r in records if r.get("Key")}
     except Exception as e:
         logger.error(f"get_team_config failed: {e}")
